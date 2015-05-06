@@ -1,0 +1,26 @@
+{
+  "name": "continuousphp/phing-tasks",
+  "homepage": "https://github.com/continuousphp/phing-tasks",
+  "description": "Phing tasks for continuousphp",
+  "type": "library",
+  "keywords": ["build", "tool", "task", "phing", "continuousphp"],
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Frederic Dewinne",
+      "email": "frederic@continuousphp.com"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^4.6",
+    "squizlabs/php_codesniffer": "^2.3"
+  },
+  "require": {
+    "phing/phing": "~2.9"
+  },
+  "autoload": {
+    "psr-0": {
+      "Continuous\\": "src/"
+    }
+  }
+}
