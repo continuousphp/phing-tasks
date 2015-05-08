@@ -1,0 +1,4 @@
+<project>
+    <taskdef name="continuousphp-config" classname="Continuous\Task\ConfigTask" />
+    <taskdef name="continuousphp-package" classname="Continuous\Task\PackageTask" />
+</project>

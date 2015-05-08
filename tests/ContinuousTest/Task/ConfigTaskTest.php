@@ -1,41 +1,34 @@
 <?php
 /**
- * ConfigTask.php
+ * ConfigTaskTest.php
  *
  * @author    Frederic Dewinne <frederic@continuousphp.com>
  * @copyright Copyright (c) 2015 Continuous S.A. (http://continuousphp.com)
  * @license   http://opensource.org/licenses/Apache-2.0 Apache License, Version 2.0
- * @file      ConfigTask.php
+ * @file      ConfigTaskTest.php
  * @link      http://github.com/continuousphp/phing-tasks the canonical source repo
  */
 
-namespace Continuous\Task;
+namespace ContinuousTest\Task;
+
+use Continuous\Task\ConfigTask;
 
 /**
- * ConfigTask
+ * ConfigTaskTest
  *
  * @package   phing-tasks
  * @author    Frederic Dewinne <frederic@continuousphp.com>
  * @license   http://opensource.org/licenses/Apache-2.0 Apache License, Version 2.0
  */
-class ConfigTask extends AbstractTask
+class ConfigTaskTest extends \PHPUnit_Framework_TestCase
 {
 
-    /**
-     * @param  string $token
-     * @return $this
-     */
-    public function setToken($token)
+    public function testTokenSetter()
     {
-        self::$token = $token;
-
-        return $this;
-    }
-    
-    /**
-     * Task entry point
-     */
-    public function main()
-    {
+        $token = 'toto';
+        
+        $task = new ConfigTask();
+        $this->assertSame($task, $task->setToken($token));
+        $this->assertAttributeSame($token, 'token', 'Continuous\Task\AbstractTask');
     }
 }

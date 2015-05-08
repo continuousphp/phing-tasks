@@ -11,6 +11,8 @@
 
 namespace Continuous\Task;
 
+use GuzzleHttp\Client;
+
 /**
  * AbstractTask
  *
@@ -26,15 +28,9 @@ abstract class AbstractTask extends \Task
     static protected $token;
 
     /**
-     * @param  string $token
-     * @return $this
+     * @var Client
      */
-    public function setToken($token)
-    {
-        self::$token = $token;
-
-        return $this;
-    }
+    static protected $client;
 
     /**
      * @return string
@@ -42,5 +38,27 @@ abstract class AbstractTask extends \Task
     protected function getToken()
     {
         return self::$token;
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function setClient(Client $client)
+    {
+        self::$client = $client;
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getClient()
+    {
+        if (is_null(self::$client)) {
+            $this->setClient(new Client(
+                array('base_url' => 'https://api.continuousphp.com/')
+            ));
+        }
+        
+        return self::$client;
     }
 }

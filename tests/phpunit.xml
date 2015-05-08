@@ -1,0 +1,14 @@
+<phpunit backupGlobals="false"
+         cacheTokens="true"
+         colors="true">
+    <testsuites>
+        <testsuite name="Phing Tasks test suite">
+            <directory>ContinuousTest</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../src</directory>
+        </whitelist>
+    </filter>
+</phpunit>

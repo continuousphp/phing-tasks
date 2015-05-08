@@ -1,0 +1,26 @@
+<project name="continuousphp-phing-tasks" default="help" basedir=".">
+    <property file="./build.properties" />
+    <import file="${project.basedir}/tasks.xml" />
+    
+
+    <target name="help" description="List available targets">
+        <exec executable="{phing.bin}"
+              passthru="true">
+            <arg value="-l"/>
+        </exec>
+    </target>
+    
+    <target name="config" description="Config continuousphp tasks">
+        <continuousphp-config
+            token="${token}" />
+    </target>
+    
+    <target name="package" description="Ouput the package url">
+        <continuousphp-package
+            project="${project}"
+            reference="${reference}"
+            property="package.url" />
+        <echo message="---PACKAGE_URL:${package.url}---" />
+    </target>
+
+</project>
