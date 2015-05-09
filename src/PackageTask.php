@@ -102,9 +102,8 @@ class PackageTask extends AbstractTask
         }
         
         $response = $this->getClient()
-            ->get($buildUrl);
-
-        $response = json_decode($response->getBody()->getContents(), true);
+            ->get($buildUrl)
+            ->json();
         
         $build = $response['_embedded']['builds'][0];
         
@@ -114,8 +113,9 @@ class PackageTask extends AbstractTask
         $this->log($build['_links']['self']['href']);
 
         $response = $this->getClient()
-            ->get($build['_links']['self']['href'] . '/packages/deploy?token=' . $this->getToken());
-        $response = json_decode($response->getBody()->getContents(), true);
+            ->get($build['_links']['self']['href'] . '/packages/deploy?token=' . $this->getToken())
+            ->json();
+        
         $this->getProject()->setProperty('package.url', $response['url']);
     }
 }
