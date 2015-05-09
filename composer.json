@@ -17,6 +17,7 @@
     "behat/behat": "^3.0"
   },
   "require": {
+    "php": ">=5.4.0",
     "phing/phing": "~2.9",
     "guzzlehttp/guzzle": "~5.0"
   },
