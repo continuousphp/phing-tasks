@@ -44,7 +44,7 @@ This task helps you to get a package url for a repository.
 | provider   | String | the repository provider platform (git-hub, bitbucket...) | n/a     | Yes      |
 | repository | String | the repository name                                      | n/a     | Yes      |
 | reference  | String | the GIT reference of the package                         | n/a     | No       |
-| property   | String | the property in which the download URL will be provided  | n/a     | No       |
+| property   | String | the property in which the download URL will be defined   | n/a     | No       |
 
 #### 2.2 Example
 ```xml
