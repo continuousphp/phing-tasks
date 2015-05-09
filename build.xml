@@ -4,7 +4,7 @@
     
 
     <target name="help" description="List available targets">
-        <exec executable="{phing.bin}"
+        <exec executable="${phing.bin}"
               passthru="true">
             <arg value="-l"/>
         </exec>
