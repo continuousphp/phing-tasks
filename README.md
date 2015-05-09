@@ -21,6 +21,9 @@ Install this package through [Composer](https://getcomposer.org/) by adding this
 
 ## Tasks
 
+1. [continuousphp-config](#1-continuousphp-config)
+2. [continuousphp-package](#2-continuousphp-package)
+
 ### 1. continuousphp-config
 The goal of this task is to setup your credential in order to start consuming
 [continuousphp](https://continuousphp.com/) API
