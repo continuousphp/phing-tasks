@@ -20,7 +20,7 @@ use GuzzleHttp\Client;
  * @author    Frederic Dewinne <frederic@continuousphp.com>
  * @license   http://opensource.org/licenses/Apache-2.0 Apache License, Version 2.0
  */
-abstract class AbstractTask extends \Task
+abstract class AbstractTask extends \ProjectComponent
 {
     /**
      * @var string
@@ -55,7 +55,14 @@ abstract class AbstractTask extends \Task
     {
         if (is_null(self::$client)) {
             $this->setClient(new Client(
-                array('base_url' => 'https://api.continuousphp.com/')
+                array(
+                    'base_url' => 'https://api.continuousphp.com/',
+                    'defaults' => array(
+                        'headers' => array(
+                            'Accept' => 'application/hal+json',
+                        )
+                    )
+                )
             ));
         }
         

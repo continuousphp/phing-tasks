@@ -29,7 +29,12 @@ class PackageTask extends AbstractTask
     /**
      * @var string
      */
-    protected $project;
+    protected $provider;
+
+    /**
+     * @var string
+     */
+    protected $repository;
 
     /**
      * @var string
@@ -48,13 +53,24 @@ class PackageTask extends AbstractTask
     }
 
     /**
-     * @param string $project
+     * @param string $provider
      * @return $this
      */
-    public function setProject($project)
+    public function setProvider($provider)
     {
-        $this->project = $project;
+        $this->provider = $provider;
 
+        return $this;
+    }
+
+    /**
+     * @param string $repository
+     * @return $this
+     */
+    public function setRepository($repository)
+    {
+        $this->repository = $repository;
+        
         return $this;
     }
 
@@ -75,14 +91,31 @@ class PackageTask extends AbstractTask
      */
     public function main()
     {
-        $build = $this->getClient()
-            ->get('/api/projects/' . urlencode($this->getProject()) . '/builds?token=' . $this->getToken(),
-                array(
-                    'headers' => array(
-                        'Accept' => 'application/hal+json',
-                        'Origin' => 'https://app.continuousphp.com'
-                    )
-                ));
+        $buildUrl = '/api/projects/' . urlencode($this->provider . '/' . $this->repository) . '/builds'
+                  . '?token=' . $this->getToken()
+                  . '&state[]=complete'
+                  . '&result[]=success'
+                  . '&result[]=warning';
         
+        if ($this->reference) {
+            $buildUrl.= '&ref=' . urlencode($this->reference);
+        }
+        
+        $response = $this->getClient()
+            ->get($buildUrl);
+
+        $response = json_decode($response->getBody()->getContents(), true);
+        
+        $build = $response['_embedded']['builds'][0];
+        
+        $message = "found build $build[buildId] for reference $build[ref] created on $build[created]"
+                 . " and finished with $build[result] result";
+        $this->log($message);
+        $this->log($build['_links']['self']['href']);
+
+        $response = $this->getClient()
+            ->get($build['_links']['self']['href'] . '/packages/deploy?token=' . $this->getToken());
+        $response = json_decode($response->getBody()->getContents(), true);
+        $this->getProject()->setProperty('package.url', $response['url']);
     }
 }

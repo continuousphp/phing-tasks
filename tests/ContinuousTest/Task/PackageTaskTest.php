@@ -23,13 +23,22 @@ use Continuous\Task\PackageTask;
 class PackageTaskTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testProjectSetter()
+    public function testProviderSetter()
     {
-        $project = 'toto';
+        $provider = 'toto';
         
         $task = new PackageTask();
-        $this->assertSame($task, $task->setProject($project));
-        $this->assertAttributeSame($project, 'project', $task);
+        $this->assertSame($task, $task->setProvider($provider));
+        $this->assertAttributeSame($provider, 'provider', $task);
+    }
+
+    public function testRepositorySetter()
+    {
+        $repository = 'toto';
+        
+        $task = new PackageTask();
+        $this->assertSame($task, $task->setRepository($repository));
+        $this->assertAttributeSame($repository, 'repository', $task);
     }
 
     public function testReferenceSetter()
@@ -48,10 +57,5 @@ class PackageTaskTest extends \PHPUnit_Framework_TestCase
         $task = new PackageTask();
         $this->assertSame($task, $task->setProperty($property));
         $this->assertAttributeSame($property, 'property', $task);
-    }
-    
-    public function mainTest()
-    {
-        
     }
 }

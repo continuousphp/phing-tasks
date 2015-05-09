@@ -23,7 +23,12 @@ class TaskContext implements Context, SnippetAcceptingContext
     /**
      * @var string
      */
-    protected $project;
+    protected $provider;
+
+    /**
+     * @var string
+     */
+    protected $repository;
 
     /**
      * @var string
@@ -55,11 +60,19 @@ class TaskContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Given the project :project
+     * @Given the provider :provider
      */
-    public function setProject($project)
+    public function setProvider($provider)
     {
-        $this->project = $project;
+        $this->provider = $provider;
+    }
+
+    /**
+     * @Given the repository :repository
+     */
+    public function setRepository($repository)
+    {
+        $this->repository = $repository;
     }
 
     /**
@@ -77,7 +90,8 @@ class TaskContext implements Context, SnippetAcceptingContext
     {
         $command = self::PHING_BIN_PATH . ' config package'
                  . " -Dtoken=" . $this->token
-                 . " -Dproject=" . $this->project
+                 . " -Dprovider=" . $this->provider
+                 . " -Drepository=" . $this->repository
                  . " -Dreference=" . $this->reference;
         
         exec($command, $output, $return);
@@ -100,6 +114,6 @@ class TaskContext implements Context, SnippetAcceptingContext
         preg_match($regex, $this->lastOutput, $matches);
         $url = $matches[1];
         
-        \PHPUnit_Framework_Assert::assertNotEquals('${package.url}', $url);
+        \PHPUnit_Framework_Assert::assertNotEquals('${package.url}', $url, $this->lastOutput);
     }
 }
