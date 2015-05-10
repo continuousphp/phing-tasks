@@ -19,11 +19,17 @@
   "require": {
     "php": ">=5.4.0",
     "phing/phing": "~2.9",
-    "guzzlehttp/guzzle": "~5.0"
+    "continuousphp/sdk": "~0.1"
   },
   "autoload": {
     "psr-4": {
       "Continuous\\Task\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Continuous\\Tests\\Task\\": "tests/",
+      "Continuous\\Features\\": "features/bootstrap/"
     }
   }
 }

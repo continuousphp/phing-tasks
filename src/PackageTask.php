@@ -91,31 +91,36 @@ class PackageTask extends AbstractTask
      */
     public function main()
     {
-        $buildUrl = '/api/projects/' . urlencode($this->provider . '/' . $this->repository) . '/builds'
-                  . '?token=' . $this->getToken()
-                  . '&state[]=complete'
-                  . '&result[]=success'
-                  . '&result[]=warning';
+        $projectId = $this->provider . '/' . $this->repository;
+        $projectFilter = [
+            'projectId' => $projectId,
+            'state' => ['complete'],
+            'result' => ['success', 'warning']
+        ];
         
         if ($this->reference) {
-            $buildUrl.= '&ref=' . urlencode($this->reference);
+            $projectFilter['ref'] = $this->reference;
         }
-        
-        $response = $this->getClient()
-            ->get($buildUrl)
-            ->json();
-        
-        $build = $response['_embedded']['builds'][0];
-        
-        $message = "found build $build[buildId] for reference $build[ref] created on $build[created]"
-                 . " and finished with $build[result] result";
-        $this->log($message);
-        $this->log($build['_links']['self']['href']);
 
-        $response = $this->getClient()
-            ->get($build['_links']['self']['href'] . '/packages/deploy?token=' . $this->getToken())
-            ->json();
+        // Get the build list
+        $builds = $this->getClient()
+            ->getBuilds($projectFilter);
         
-        $this->getProject()->setProperty('package.url', $response['url']);
+        if (empty($builds['_embedded']['builds'])) {
+            $message = 'No build found for the project "' . $projectId . '"';
+            if ($this->reference) {
+                $message.= ' on the reference  "' . $this->reference . '"';
+            }
+            throw new \BuildException($message);
+        }
+
+        // Get the package download url of the last build
+        $package = $this->getClient()->getPackage([
+            'projectId' => $projectId,
+            'buildId' => $builds['_embedded']['builds'][0]['buildId'],
+            'packageType' => 'deploy'
+        ]);
+        
+        $this->getProject()->setProperty('package.url', $package['url']);
     }
 }

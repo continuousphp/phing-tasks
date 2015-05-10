@@ -11,7 +11,7 @@
 
 namespace Continuous\Task;
 
-use GuzzleHttp\Client;
+use Continuous\Sdk\Client;
 
 /**
  * AbstractTask
@@ -23,22 +23,9 @@ use GuzzleHttp\Client;
 abstract class AbstractTask extends \ProjectComponent
 {
     /**
-     * @var string
-     */
-    static protected $token;
-
-    /**
      * @var Client
      */
     static protected $client;
-
-    /**
-     * @return string
-     */
-    protected function getToken()
-    {
-        return self::$token;
-    }
 
     /**
      * @param Client $client
@@ -53,19 +40,6 @@ abstract class AbstractTask extends \ProjectComponent
      */
     protected function getClient()
     {
-        if (is_null(self::$client)) {
-            $this->setClient(new Client(
-                array(
-                    'base_url' => 'https://api.continuousphp.com/',
-                    'defaults' => array(
-                        'headers' => array(
-                            'Accept' => 'application/hal+json',
-                        )
-                    )
-                )
-            ));
-        }
-        
         return self::$client;
     }
 }

@@ -29,6 +29,6 @@ class ConfigTaskTest extends \PHPUnit_Framework_TestCase
         
         $task = new ConfigTask();
         $this->assertSame($task, $task->setToken($token));
-        $this->assertAttributeSame($token, 'token', 'Continuous\Task\AbstractTask');
+        $this->assertAttributeSame($token, 'token', $task);
     }
 }

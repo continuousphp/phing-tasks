@@ -11,6 +11,8 @@
 
 namespace Continuous\Task;
 
+use Continuous\Sdk\Service;
+
 /**
  * ConfigTask
  *
@@ -20,6 +22,10 @@ namespace Continuous\Task;
  */
 class ConfigTask extends AbstractTask
 {
+    /**
+     * @var string
+     */
+    protected $token;
 
     /**
      * @param  string $token
@@ -27,15 +33,21 @@ class ConfigTask extends AbstractTask
      */
     public function setToken($token)
     {
-        self::$token = $token;
+        $this->token = $token;
 
         return $this;
     }
-    
+
     /**
      * Task entry point
      */
     public function main()
     {
+        $config = [];
+        if ($this->token) {
+            $config['token'] = $this->token;
+        }
+        
+        $this->setClient(Service::factory($config));
     }
 }
