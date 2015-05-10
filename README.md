@@ -54,6 +54,6 @@ This task helps you to get a package url for a repository.
 <continuousphp-package
             provider="git-hub"
             repository="continuousphp/phing-tasks"
-            reference="/refs/heads/master"
+            reference="refs/heads/master"
             property="package.url" />
 ```

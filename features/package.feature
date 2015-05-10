@@ -7,6 +7,6 @@ Feature: continuousphp package
     Given I've the token "cc2efee7-be03-4611-923e-065bc3dd3326"
     And the provider "git-hub"
     And the repository "continuousphp/phing-tasks"
-    And the reference "/refs/heads/master"
+    And the reference "refs/heads/master"
     When I use the continuousphp package task
     Then I should retrieve a valid download url
