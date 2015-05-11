@@ -42,6 +42,11 @@ class PackageTask extends AbstractTask
     protected $property;
 
     /**
+     * @var string
+     */
+    protected $destination;
+
+    /**
      * @param string $reference
      * @return $this
      */
@@ -84,6 +89,17 @@ class PackageTask extends AbstractTask
 
         return $this;
     }
+
+    /**
+     * @param string $destination
+     * @return $this
+     */
+    public function setDestination($destination)
+    {
+        $this->destination = $destination;
+
+        return $this;
+    }
     
     /**
      * Task entry point
@@ -91,9 +107,9 @@ class PackageTask extends AbstractTask
      */
     public function main()
     {
-        $projectId = $this->provider . '/' . $this->repository;
         $projectFilter = [
-            'projectId' => $projectId,
+            'provider' => $this->provider,
+            'repository' => $this->repository,
             'state' => ['complete'],
             'result' => ['success', 'warning']
         ];
@@ -107,20 +123,34 @@ class PackageTask extends AbstractTask
             ->getBuilds($projectFilter);
         
         if (empty($builds['_embedded']['builds'])) {
-            $message = 'No build found for the project "' . $projectId . '"';
+            $message = 'No build found for the project "' . $this->provider . '/' . $this->repository . '"';
             if ($this->reference) {
                 $message.= ' on the reference  "' . $this->reference . '"';
             }
             throw new \BuildException($message);
         }
 
-        // Get the package download url of the last build
-        $package = $this->getClient()->getPackage([
-            'projectId' => $projectId,
-            'buildId' => $builds['_embedded']['builds'][0]['buildId'],
-            'packageType' => 'deploy'
-        ]);
+        if ($this->destination) {
+            // Get the package download url of the last build
+            $package = $this->getClient()->downloadPackage([
+                'provider' => $this->provider,
+                'repository' => $this->repository,
+                'buildId' => $builds['_embedded']['builds'][0]['buildId'],
+                'packageType' => 'deploy',
+                'destination' => $this->destination
+            ]);
+        } else {
+            // Get the package download url of the last build
+            $package = $this->getClient()->getPackage([
+                'provider' => $this->provider,
+                'repository' => $this->repository,
+                'buildId' => $builds['_embedded']['builds'][0]['buildId'],
+                'packageType' => 'deploy'
+            ]);
+        }
         
-        $this->getProject()->setProperty('package.url', $package['url']);
+        if ($this->property) {
+            $this->getProject()->setProperty($this->property, $package[$this->destination ? 'path' : 'url']);
+        }
     }
 }

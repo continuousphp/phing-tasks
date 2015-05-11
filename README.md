@@ -26,7 +26,7 @@ Install this package through [Composer](https://getcomposer.org/) by adding this
 
 ### 1. continuousphp-config
 The goal of this task is to setup your credential in order to start consuming
-[continuousphp](https://continuousphp.com/) API
+[continuousphp](https://continuousphp.com/) API to access private data
 
 #### 1.1. Attributes
 | Name  | Type   | Description                      | Default | Required |
@@ -42,12 +42,13 @@ The goal of this task is to setup your credential in order to start consuming
 This task helps you to get a package url for a repository.
 
 #### 2.1. Attributes
-| Name       | Type   | Description                                              | Default | Required |
-| ---------- | ------ | -------------------------------------------------------- | ------- | -------- |
-| provider   | String | the repository provider platform (git-hub, bitbucket...) | n/a     | Yes      |
-| repository | String | the repository name                                      | n/a     | Yes      |
-| reference  | String | the GIT reference of the package                         | n/a     | No       |
-| property   | String | the property in which the download URL will be defined   | n/a     | No       |
+| Name        | Type   | Description                                                         | Default | Required |
+| ----------- | ------ | ------------------------------------------------------------------- | ------- | -------- |
+| provider    | String | the repository provider platform (git-hub, bitbucket...)            | n/a     | Yes      |
+| repository  | String | the repository name                                                 | n/a     | Yes      |
+| reference   | String | the GIT reference of the package                                    | n/a     | No       |
+| destination | String | the GIT reference of the package                                    | n/a     | No       |
+| property    | String | the property in which the download URL or file path will be defined | n/a     | No       |
 
 #### 2.2 Example
 ```xml
@@ -56,4 +57,14 @@ This task helps you to get a package url for a repository.
             repository="continuousphp/phing-tasks"
             reference="refs/heads/master"
             property="package.url" />
+```
+Download the package by adding the destination
+
+```xml
+<continuousphp-package
+            provider="git-hub"
+            repository="continuousphp/phing-tasks"
+            reference="refs/heads/master"
+            destination="/tmp"
+            property="package.path" />
 ```
