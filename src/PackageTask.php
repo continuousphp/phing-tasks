@@ -102,6 +102,12 @@ class PackageTask extends AbstractTask
             $projectFilter['ref'] = $this->reference;
         }
 
+        // Check if the client is available.
+        if (!$this->getClient()) {
+            $message = 'Failed to connect. Please ensure the "continuousphp-config" task was executed with a valid token.';
+            throw new \BuildException($message);
+        }
+
         // Get the build list
         $builds = $this->getClient()
             ->getBuilds($projectFilter);
