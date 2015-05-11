@@ -19,7 +19,7 @@
   "require": {
     "php": ">=5.4.0",
     "phing/phing": "~2.9",
-    "continuousphp/sdk": "~0.1"
+    "continuousphp/sdk": "~0.2"
   },
   "autoload": {
     "psr-4": {
