@@ -23,5 +23,4 @@
             property="package.url" />
         <echo message="---PACKAGE_URL:${package.url}---" />
     </target>
-
 </project>
