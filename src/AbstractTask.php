@@ -43,8 +43,8 @@ abstract class AbstractTask extends \ProjectComponent
     {
         // If no client has been set previously, default to a client without an
         // access token. This is useful for accessing public repositories.
-        if (self::$client === NULL) {
-          $this->setClient(Service::factory([]));
+        if (is_null(self::$client)) {
+            $this->setClient(Service::factory([]));
         }
         return self::$client;
     }
