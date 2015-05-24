@@ -12,6 +12,7 @@
 namespace Continuous\Task;
 
 use Continuous\Sdk\Client;
+use Continuous\Sdk\Service;
 
 /**
  * AbstractTask
@@ -40,6 +41,11 @@ abstract class AbstractTask extends \ProjectComponent
      */
     protected function getClient()
     {
+        // If no client has been set previously, default to a client without an
+        // access token. This is useful for accessing public repositories.
+        if (self::$client === NULL) {
+          $this->setClient(Service::factory([]));
+        }
         return self::$client;
     }
 }
