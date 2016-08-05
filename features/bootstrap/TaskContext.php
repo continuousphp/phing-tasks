@@ -38,6 +38,11 @@ class TaskContext implements Context, SnippetAcceptingContext
     /**
      * @var string
      */
+    protected $state;
+
+    /**
+     * @var string
+     */
     protected $lastOutput;
     
     /**
@@ -84,6 +89,14 @@ class TaskContext implements Context, SnippetAcceptingContext
     }
 
     /**
+     * @Given the state :state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    /**
      * @When I use the continuousphp package task
      */
     public function runPackageTask()
@@ -93,7 +106,28 @@ class TaskContext implements Context, SnippetAcceptingContext
                  . " -Dprovider=" . $this->provider
                  . " -Drepository=" . $this->repository
                  . " -Dreference=" . $this->reference;
+
+        exec($command, $output, $return);
+
+        if ($return) {
+            throw new \RuntimeException(implode(PHP_EOL, $output), $return);
+        }
         
+        $this->lastOutput = implode(PHP_EOL, $output);
+    }
+
+    /**
+     * @When I use the continuousphp package-with-state task
+     */
+    public function runPackageWithStateTask()
+    {
+        $command = self::PHING_BIN_PATH . ' config package-with-state'
+            . " -Dtoken=" . $this->token
+            . " -Dprovider=" . $this->provider
+            . " -Drepository=" . $this->repository
+            . " -Dreference=" . $this->reference
+            . " -Dstate=" . $this->state;
+
         exec($command, $output, $return);
         
         if ($return) {
