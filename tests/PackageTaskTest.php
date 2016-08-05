@@ -58,4 +58,22 @@ class PackageTaskTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($task, $task->setProperty($property));
         $this->assertAttributeSame($property, 'property', $task);
     }
+
+    public function testStateSetter()
+    {
+        $stateList = 'in-progress,complete';
+
+        $task = new PackageTask();
+        $this->assertSame($task, $task->setState($stateList));
+        $this->assertAttributeSame(['in-progress', 'complete'], 'state', $task);
+    }
+
+    public function testStateSetter_WithWhiteSpaces()
+    {
+        $stateList = 'in-progress , complete';
+
+        $task = new PackageTask();
+        $this->assertSame($task, $task->setState($stateList));
+        $this->assertAttributeSame(['in-progress', 'complete'], 'state', $task);
+    }
 }

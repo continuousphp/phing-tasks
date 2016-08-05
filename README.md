@@ -42,13 +42,14 @@ The goal of this task is to setup your credential in order to start consuming
 This task helps you to get a package url for a repository.
 
 #### 2.1. Attributes
-| Name        | Type   | Description                                                         | Default | Required |
-| ----------- | ------ | ------------------------------------------------------------------- | ------- | -------- |
-| provider    | String | the repository provider platform (git-hub, bitbucket...)            | n/a     | Yes      |
-| repository  | String | the repository name                                                 | n/a     | Yes      |
-| reference   | String | the GIT reference of the package                                    | n/a     | No       |
-| destination | String | the GIT reference of the package                                    | n/a     | No       |
-| property    | String | the property in which the download URL or file path will be defined | n/a     | No       |
+| Name        | Type   | Description                                                         | Default  | Required |
+| ----------- | ------ | ------------------------------------------------------------------- | -------- | -------- |
+| provider    | String | the repository provider platform (git-hub, bitbucket...)            | n/a      | Yes      |
+| repository  | String | the repository name                                                 | n/a      | Yes      |
+| reference   | String | the GIT reference of the package                                    | n/a      | No       |
+| state       | String | the allowed build states, can be "complete", "in-progress", or both | complete | No       |
+| destination | String | the Download destination for the package                            | n/a      | No       |
+| property    | String | the property in which the download URL or file path will be defined | n/a      | No       |
 
 #### 2.2 Example
 ```xml
@@ -65,6 +66,7 @@ Download the package by adding the destination
             provider="git-hub"
             repository="continuousphp/phing-tasks"
             reference="refs/heads/master"
+            state="in-progress,complete"
             destination="/tmp"
             property="package.path" />
 ```

@@ -24,4 +24,14 @@
         <echo message="---PACKAGE_URL:${package.url}---" />
     </target>
 
+    <target name="package-with-state" description="Ouput the package url">
+        <continuousphp-package
+                provider="${provider}"
+                repository="${repository}"
+                reference="${reference}"
+                state="${state}"
+                property="package.url" />
+        <echo message="---PACKAGE_URL:${package.url}---" />
+    </target>
+
 </project>

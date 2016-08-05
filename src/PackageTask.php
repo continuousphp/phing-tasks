@@ -29,6 +29,11 @@ class PackageTask extends AbstractTask
     /**
      * @var string
      */
+    protected $state;
+
+    /**
+     * @var string
+     */
     protected $provider;
 
     /**
@@ -53,6 +58,25 @@ class PackageTask extends AbstractTask
     public function setReference($reference)
     {
         $this->reference = $reference;
+        
+        return $this;
+    }
+
+    /**
+     * @param string $stateList
+     * @return $this
+     */
+    public function setState($stateList)
+    {
+        $this->state = [];
+        
+        foreach(explode(',', $stateList) as $state) {
+            $state = trim($state);
+
+            if ($state) {
+                $this->state[] = $state;
+            }
+        }
         
         return $this;
     }
@@ -108,19 +132,19 @@ class PackageTask extends AbstractTask
     public function main()
     {
         $projectFilter = [
-            'provider' => $this->provider,
+            'provider'   => $this->provider,
             'repository' => $this->repository,
-            'state' => ['complete'],
-            'result' => ['success', 'warning']
+            'result'     => ['success', 'warning']
         ];
         
+        $projectFilter['state'] = $this->state ? : ['complete'];
+
         if ($this->reference) {
             $projectFilter['ref'] = $this->reference;
         }
 
         // Get the build list
-        $builds = $this->getClient()
-            ->getBuilds($projectFilter);
+        $builds = $this->getClient()->getBuilds($projectFilter);
         
         if (empty($builds['_embedded']['builds'])) {
             $message = 'No build found for the project "' . $this->provider . '/' . $this->repository . '"';
